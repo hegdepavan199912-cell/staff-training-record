@@ -3,893 +3,1124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khans Restaurant - Staff Training Record</title>
+
+<title>Staff Training Record</title>
 
 <style>
+
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
+html,
 body {
-  margin: 0;
-  background: #e8e8e8;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #111;
+    margin: 0;
+    padding: 0;
+    background: #e5e5e5;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #222;
 }
 
-/* TOP BUTTONS */
+/* =========================
+   CONTROL BUTTONS
+   ========================= */
+
 .controls {
-  max-width: 1100px;
-  margin: 15px auto;
-  padding: 12px;
-  background: white;
-  border-radius: 10px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+    width: 210mm;
+    margin: 15px auto;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
-button {
-  border: none;
-  border-radius: 7px;
-  padding: 11px 18px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
+.controls button {
+    border: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    background: #56756d;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.edit-btn {
-  background: #1677ff;
-  color: white;
+.controls button:hover {
+    opacity: 0.85;
 }
 
-.save-btn {
-  background: #16884b;
-  color: white;
+.controls .clear {
+    background: #777;
 }
 
-.print-btn {
-  background: #222;
-  color: white;
+/* =========================
+   A4 PAGE
+   ========================= */
+
+.page {
+    width: 210mm;
+    height: 297mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    background: white;
+    padding: 12mm 12mm 9mm 12mm;
+    box-shadow: 0 0 12px rgba(0,0,0,.25);
+    overflow: hidden;
 }
 
-.add-btn {
-  background: #e5e5e5;
-  color: #111;
-  margin-top: 8px;
-}
+/* =========================
+   HEADER
+   ========================= */
 
-/* A4 PAPER */
-.paper {
-  width: 210mm;
-  min-height: 297mm;
-  margin: 15px auto;
-  padding: 8mm;
-  background: white;
-  box-shadow: 0 2px 15px rgba(0,0,0,0.25);
-}
-
-/* HEADER */
 .header {
-  height: 39mm;
-  border: 1.5px solid #222;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 3mm;
 }
 
-.company {
-  text-align: center;
+.header-left {
+    flex: 1;
 }
 
-.company-name {
-  font-size: 25px;
-  font-weight: bold;
-  letter-spacing: 1px;
+.title {
+    margin: 0;
+    color: #56756d;
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: .7px;
+    display: inline-block;
+    border-bottom: 3px dotted #56756d;
+    padding-bottom: 3px;
 }
 
-.company-sub {
-  font-size: 10px;
-  margin-top: 5px;
-  letter-spacing: 2px;
+.description {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.25;
+    max-width: 155mm;
 }
 
-.restaurant {
-  position: absolute;
-  right: 6mm;
-  top: 5mm;
-  text-align: right;
-  font-size: 15px;
-  font-weight: bold;
-  line-height: 1.4;
+.icon-circle {
+    width: 23mm;
+    height: 23mm;
+    border: 3px dotted #56756d;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #56756d;
+    font-size: 28px;
+    margin-left: 5mm;
 }
 
-.document-title {
-  position: absolute;
-  bottom: 4mm;
-  left: 6mm;
-  font-size: 12px;
-  font-weight: bold;
+/* =========================
+   EXAMPLE
+   ========================= */
+
+.example {
+    font-size: 12px;
+    font-weight: bold;
+    margin: 3mm 0 2mm;
 }
 
-/* SECTION */
-.section {
-  margin-top: 5mm;
+/* =========================
+   TWO COLUMNS
+   ========================= */
+
+.columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3mm;
 }
 
-/* TWO COLUMNS */
-.two-column {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border: 1.5px solid #222;
+/* =========================
+   STAFF BOX
+   ========================= */
+
+.staff-box {
+    border: 1px solid #666;
+    width: 100%;
 }
 
-.box {
-  padding: 4mm;
-  min-height: 42mm;
-  border-right: 1px solid #222;
+.person-info {
+    min-height: 24mm;
+    padding: 2.5mm;
+    border-bottom: 1px solid #666;
+    font-size: 10.5px;
+    line-height: 1.55;
 }
 
-.box:last-child {
-  border-right: none;
+.person-info input {
+    font-family: Arial, sans-serif;
+    font-size: 10.5px;
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 70%;
+    padding: 1px 2px;
 }
 
-.box-title {
-  font-size: 11px;
-  font-weight: bold;
-  text-decoration: underline;
-  margin-bottom: 4mm;
+.person-info input:focus {
+    background: #fff4b8;
 }
 
-/* FORM ROW */
-.form-row {
-  display: grid;
-  grid-template-columns: 105px 1fr;
-  gap: 6px;
-  margin-bottom: 8px;
-  font-size: 10px;
-  align-items: center;
-}
+/* =========================
+   TRAINING TABLE
+   ========================= */
 
-input,
-textarea,
-select {
-  width: 100%;
-  border: 1px solid #aaa;
-  padding: 6px;
-  font-family: Arial, sans-serif;
-  font-size: 10px;
-}
-
-textarea {
-  resize: vertical;
-}
-
-/* TRAINING TABLE */
 .training-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 9px;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 7.7px;
 }
 
 .training-table th,
 .training-table td {
-  border: 1px solid #222;
-  padding: 5px 4px;
+    border: 1px solid #777;
+    padding: 1.05mm 1.2mm;
+    line-height: 1.05;
+    vertical-align: middle;
 }
 
 .training-table th {
-  text-align: center;
-  font-weight: bold;
-  background: #f2f2f2;
+    background: #eeeeeb;
+    font-weight: bold;
+    text-align: center;
+    font-size: 7.6px;
 }
 
-.training-table input,
-.training-table select {
-  border: none;
-  padding: 2px;
-  font-size: 9px;
-  background: transparent;
+.training-table th:first-child {
+    width: 58%;
+    text-align: left;
 }
 
-.sl {
-  width: 8%;
-  text-align: center;
+.training-table th:nth-child(2) {
+    width: 21%;
 }
 
-.topic {
-  width: 30%;
+.training-table th:nth-child(3) {
+    width: 21%;
 }
 
-.date {
-  width: 15%;
+.training-table td:first-child {
+    text-align: left;
 }
 
-.trainer {
-  width: 18%;
+.training-table td:nth-child(2),
+.training-table td:nth-child(3) {
+    text-align: center;
 }
 
-.status {
-  width: 15%;
+/* =========================
+   SECTION HEADERS
+   ========================= */
+
+.section td {
+    background: #dfe3df;
+    font-weight: bold;
+    font-size: 8px;
+    padding-top: 1.2mm;
+    padding-bottom: 1.2mm;
 }
 
-.signature {
-  width: 14%;
+/* =========================
+   EDITABLE TABLE FIELDS
+   ========================= */
+
+.training-table input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: Arial, sans-serif;
+    font-size: 7.5px;
+    padding: 0;
 }
 
-/* NOTES */
-.notes-box {
-  min-height: 45mm;
+.training-table input:focus {
+    background: #fff4b8;
 }
 
-/* CONFIRMATION */
-.confirmation {
-  border: 1.5px solid #222;
-  padding: 4mm;
-  margin-top: 5mm;
-  font-size: 10px;
-  line-height: 1.5;
+.method {
+    text-align: left !important;
 }
 
-/* SIGNATURE */
-.signature-area {
-  height: 25mm;
-  border-bottom: 1px solid #222;
-  position: relative;
-  margin-top: 5mm;
+/* =========================
+   EDIT MODE
+   ========================= */
+
+.editing input {
+    background: #fffdf0;
+    border: 1px dashed #aaa;
 }
 
-.signature-label {
-  position: absolute;
-  bottom: 2mm;
-  left: 0;
-  font-size: 9px;
+.saved input {
+    background: transparent;
+    border: none;
 }
 
-/* FOOTER */
-.footer {
-  text-align: center;
-  font-size: 9px;
-  margin-top: 5mm;
-  line-height: 1.5;
+/* =========================
+   PRINT
+   ========================= */
+
+@page {
+    size: A4 portrait;
+    margin: 0;
 }
 
-/* MOBILE */
-@media (max-width: 800px) {
-  body {
-    overflow-x: auto;
-  }
-
-  .paper {
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-}
-
-/* PRINT */
 @media print {
 
-  body {
-    background: white;
-  }
+    html,
+    body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+        background: white;
+    }
 
-  .controls,
-  .add-btn {
-    display: none !important;
-  }
+    .controls {
+        display: none !important;
+    }
 
-  .paper {
-    margin: 0;
-    width: 210mm;
-    min-height: 297mm;
-    box-shadow: none;
-    padding: 8mm;
-  }
+    .page {
+        width: 210mm;
+        height: 297mm;
+        min-height: 297mm;
+        margin: 0;
+        padding: 12mm 12mm 9mm 12mm;
+        box-shadow: none;
+        overflow: hidden;
+    }
 
-  input,
-  textarea,
-  select {
-    border: none;
-  }
+    input {
+        border: none !important;
+        background: transparent !important;
+    }
 
-  .training-table input,
-  .training-table select {
-    border: none;
-  }
-
-  @page {
-    size: A4;
-    margin: 0;
-  }
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
 }
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media screen and (max-width: 700px) {
+
+    body {
+        background: #ccc;
+        overflow-x: auto;
+    }
+
+    .page {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .controls {
+        width: 100%;
+    }
+}
+
 </style>
 </head>
 
+
 <body>
 
-<!-- BUTTONS -->
+<!-- =====================================================
+     BUTTONS
+     ===================================================== -->
+
 <div class="controls">
 
-  <button class="edit-btn" onclick="toggleEdit()">
-    ✏️ Edit
-  </button>
-
-  <button class="save-btn" onclick="saveRecord()">
-    💾 Save
-  </button>
-
-  <button class="print-btn" onclick="window.print()">
-    🖨️ Print / Save PDF
-  </button>
-
-</div>
-
-
-<!-- A4 DOCUMENT -->
-<div class="paper" id="paper">
-
-  <!-- HEADER -->
-  <div class="header">
-
-    <div class="company">
-      <div class="company-name">
-        STAFF TRAINING RECORD
-      </div>
-
-      <div class="company-sub">
-        TRAINING & RECORD MANAGEMENT SYSTEM
-      </div>
-    </div>
-
-    <!-- UPPER RIGHT -->
-    <div class="restaurant">
-      KHANS RESTAURANT<br>
-      BAYSWATER
-    </div>
-
-    <div class="document-title">
-      STAFF TRAINING RECORD
-    </div>
-
-  </div>
-
-
-  <!-- STAFF + TRAINING INFORMATION -->
-  <div class="section">
-
-    <div class="two-column">
-
-      <!-- STAFF INFORMATION -->
-      <div class="box">
-
-        <div class="box-title">
-          STAFF INFORMATION
-        </div>
-
-        <div class="form-row">
-          <b>Staff Name</b>
-          <input
-            type="text"
-            id="staffName"
-            placeholder="Enter staff name">
-        </div>
-
-        <div class="form-row">
-          <b>Employee ID</b>
-          <input
-            type="text"
-            id="employeeId"
-            placeholder="Enter employee ID">
-        </div>
-
-        <div class="form-row">
-          <b>Department</b>
-          <input
-            type="text"
-            id="department"
-            placeholder="Enter department">
-        </div>
-
-        <div class="form-row">
-          <b>Position</b>
-          <input
-            type="text"
-            id="position"
-            placeholder="Enter position">
-        </div>
-
-      </div>
-
-
-      <!-- TRAINING INFORMATION -->
-      <div class="box">
-
-        <div class="box-title">
-          TRAINING INFORMATION
-        </div>
-
-        <div class="form-row">
-          <b>Record No.</b>
-          <input
-            type="text"
-            id="recordNo"
-            placeholder="Enter record number">
-        </div>
-
-        <div class="form-row">
-          <b>Training Date</b>
-          <input
-            type="date"
-            id="trainingDate">
-        </div>
-
-        <div class="form-row">
-          <b>Trainer</b>
-          <input
-            type="text"
-            id="trainer"
-            placeholder="Enter trainer">
-        </div>
-
-        <div class="form-row">
-          <b>Location</b>
-          <input
-            type="text"
-            id="location"
-            value="Khans Restaurant, Bayswater">
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- TRAINING TABLE -->
-  <div class="section">
-
-    <table class="training-table">
-
-      <thead>
-
-        <tr>
-          <th class="sl">SL NO</th>
-          <th class="topic">TRAINING / TOPIC</th>
-          <th class="date">DATE</th>
-          <th class="trainer">TRAINER</th>
-          <th class="status">STATUS</th>
-          <th class="signature">SIGNATURE</th>
-        </tr>
-
-      </thead>
-
-      <tbody id="trainingRows">
-
-      </tbody>
-
-    </table>
-
-    <button class="add-btn" onclick="addTrainingRow()">
-      + Add Training Row
+    <button id="editButton" onclick="toggleEdit()">
+        ✏️ Edit
     </button>
 
-  </div>
+    <button onclick="saveRecord()">
+        💾 Save
+    </button>
 
+    <button onclick="generatePDF()">
+        📄 Generate PDF
+    </button>
 
-  <!-- NOTES + APPROVAL -->
-  <div class="section">
+    <button onclick="printRecord()">
+        🖨️ Print
+    </button>
 
-    <div class="two-column">
-
-      <!-- NOTES -->
-      <div class="box notes-box">
-
-        <div class="box-title">
-          TRAINING NOTES / COMMENTS
-        </div>
-
-        <textarea
-          id="notes"
-          rows="8"
-          placeholder="Enter training notes or comments..."></textarea>
-
-      </div>
-
-
-      <!-- APPROVAL -->
-      <div class="box">
-
-        <div class="box-title">
-          APPROVAL
-        </div>
-
-        <div class="form-row">
-          <b>Staff Signature</b>
-          <input
-            type="text"
-            id="staffSignature">
-        </div>
-
-        <div class="form-row">
-          <b>Supervisor</b>
-          <input
-            type="text"
-            id="supervisor">
-        </div>
-
-        <div class="form-row">
-          <b>Approval Date</b>
-          <input
-            type="date"
-            id="approvalDate">
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- CONFIRMATION -->
-  <div class="confirmation">
-
-    <b>TRAINING RECORD CONFIRMATION</b>
-
-    <br>
-
-    This record confirms that the staff member has attended
-    and/or completed the training listed above.
-
-    The completed record should be maintained for company
-    documentation and future reference.
-
-  </div>
-
-
-  <!-- AUTHORIZED SIGNATURE -->
-  <div class="signature-area">
-
-    <div class="signature-label">
-      Authorized Signature
-    </div>
-
-  </div>
-
-
-  <!-- FOOTER -->
-  <div class="footer">
-
-    <b>KHANS RESTAURANT — BAYSWATER</b>
-
-    <br>
-
-    Staff Training Record Management System
-
-  </div>
+    <button class="clear" onclick="clearRecord()">
+        🗑️ Clear
+    </button>
 
 </div>
 
+
+<!-- =====================================================
+     A4 PAGE
+     ===================================================== -->
+
+<div class="page" id="trainingPage">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="header-left">
+
+            <h1 class="title">
+                STAFF TRAINING RECORD
+            </h1>
+
+            <div class="description">
+                For each member of staff, make a note of when they have been trained
+                on different safe methods.
+            </div>
+
+        </div>
+
+        <div class="icon-circle">
+            📓
+        </div>
+
+    </div>
+
+
+    <div class="example">
+        EXAMPLE:
+    </div>
+
+
+    <!-- =================================================
+         TWO STAFF COLUMNS
+         ================================================= -->
+
+    <div class="columns">
+
+
+        <!-- =================================================
+             LEFT STAFF
+             ================================================= -->
+
+        <div class="staff-box">
+
+            <div class="person-info">
+
+                <b>Name:</b>
+                <input class="save-field"
+                       value="Jimmy Examples">
+
+                <br>
+
+                <b>Telephone no:</b>
+                <input class="save-field"
+                       value="01234 567 891">
+
+                <br>
+
+                <b>Email address:</b>
+                <input class="save-field"
+                       value="JimmyExamples@examples.com">
+
+            </div>
+
+
+            <table class="training-table">
+
+                <thead>
+                    <tr>
+                        <th>SAFE METHOD<br>ON FIRST DAY:</th>
+                        <th>DATE</th>
+                        <th>INITIALS</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Working with food? Factsheet</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Opening and closing checks</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Cross-contamination</td>
+                        <td><input class="save-field" value=""></td>
+                        <td><input class="save-field" value=""></td>
+                    </tr>
+
+                    <tr>
+                        <td>Personal hygiene and fitness to work</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Cloths</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Separating foods</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Food allergies</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Physical and chemical contamination</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Pest control</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Maintenance</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Cleaning</td>
+                        <td><input class="save-field" value=""></td>
+                        <td><input class="save-field" value=""></td>
+                    </tr>
+
+                    <tr>
+                        <td>Handwashing</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Cleaning effectively</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Clear and clean as you go</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Your cleaning schedule</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+
+                    <tr class="section">
+                        <td colspan="3">Chilling</td>
+                    </tr>
+
+                    <tr>
+                        <td>Chilled storage and displaying chilled food</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Chilling down hot food</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Defrosting</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Freezing</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+
+                    <tr class="section">
+                        <td colspan="3">Cooking</td>
+                    </tr>
+
+                    <tr>
+                        <td>Cooking safely</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Foods that need extra care</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Reheating</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Checking your menu</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Hot holding</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Ready to eat food</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Acrylamide</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+
+                    <tr class="section">
+                        <td colspan="3">Management</td>
+                    </tr>
+
+                    <tr>
+                        <td>Extra checks</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Prove it</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Managing food allergen information</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Suppliers and contractors</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Stock control</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Product withdrawal and recall</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Other training or retraining</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Level 2 food safety</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Allergen awareness</td>
+                        <td><input class="save-field" value="xx/xx/xx"></td>
+                        <td><input class="save-field" value="JE"></td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+
+        <!-- =================================================
+             RIGHT STAFF
+             ================================================= -->
+
+        <div class="staff-box">
+
+            <div class="person-info">
+
+                <b>Name:</b>
+                <input class="save-field"
+                       value="Kel Payne Jamesard Hanna Hegde">
+
+                <br>
+
+                <b>Telephone no:</b>
+                <input class="save-field"
+                       value="07878667777">
+
+                <br>
+
+                <b>Email address:</b>
+                <input class="save-field"
+                       value="kl-hegde@hotmail.co.uk">
+
+            </div>
+
+
+            <table class="training-table">
+
+                <thead>
+                    <tr>
+                        <th>SAFE METHOD<br>ON FIRST DAY:</th>
+                        <th>DATE</th>
+                        <th>INITIALS</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Working with food? Factsheet</td>
+                        <td><input class="save-field" value="4/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Opening and closing checks</td>
+                        <td><input class="save-field" value="4/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Cross-contamination</td>
+                        <td><input class="save-field" value=""></td>
+                        <td><input class="save-field" value=""></td>
+                    </tr>
+
+                    <tr>
+                        <td>Personal hygiene and fitness to work</td>
+                        <td><input class="save-field" value="9/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Cloths</td>
+                        <td><input class="save-field" value="9/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Separating foods</td>
+                        <td><input class="save-field" value="9/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Food allergies</td>
+                        <td><input class="save-field" value="9/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Physical and chemical contamination</td>
+                        <td><input class="save-field" value="9/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Pest control</td>
+                        <td><input class="save-field" value="9/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Maintenance</td>
+                        <td><input class="save-field" value="9/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Cleaning</td>
+                        <td><input class="save-field" value=""></td>
+                        <td><input class="save-field" value=""></td>
+                    </tr>
+
+                    <tr>
+                        <td>Handwashing</td>
+                        <td><input class="save-field" value="16/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Cleaning effectively</td>
+                        <td><input class="save-field" value="16/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Clear and clean as you go</td>
+                        <td><input class="save-field" value="16/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Your cleaning schedule</td>
+                        <td><input class="save-field" value="16/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+
+                    <tr class="section">
+                        <td colspan="3">Chilling</td>
+                    </tr>
+
+                    <tr>
+                        <td>Chilled storage and displaying chilled food</td>
+                        <td><input class="save-field" value="15/11/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Chilling down hot food</td>
+                        <td><input class="save-field" value="15/11/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Defrosting</td>
+                        <td><input class="save-field" value="15/11/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Freezing</td>
+                        <td><input class="save-field" value="15/11/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+
+                    <tr class="section">
+                        <td colspan="3">Cooking</td>
+                    </tr>
+
+                    <tr>
+                        <td>Cooking safely</td>
+                        <td><input class="save-field" value="14/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Foods that need extra care</td>
+                        <td><input class="save-field" value="14/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Reheating</td>
+                        <td><input class="save-field" value="14/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Checking your menu</td>
+                        <td><input class="save-field" value="14/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Hot holding</td>
+                        <td><input class="save-field" value="14/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Ready to eat food</td>
+                        <td><input class="save-field" value="14/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Acrylamide</td>
+                        <td><input class="save-field" value="14/10/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+
+                    <tr class="section">
+                        <td colspan="3">Management</td>
+                    </tr>
+
+                    <tr>
+                        <td>Extra checks</td>
+                        <td><input class="save-field" value="2/11/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Prove it</td>
+                        <td><input class="save-field" value="2/11/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Managing food allergen information</td>
+                        <td><input class="save-field" value="2/11/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Suppliers and contractors</td>
+                        <td><input class="save-field" value="2/11/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Stock control</td>
+                        <td><input class="save-field" value="2/11/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Product withdrawal and recall</td>
+                        <td><input class="save-field" value="2/11/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Other training or retraining</td>
+                        <td><input class="save-field" value="2/11/24"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Level 2 food safety</td>
+                        <td><input class="save-field" value="6/1/25"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Allergen awareness</td>
+                        <td><input class="save-field" value="6/1/25"></td>
+                        <td><input class="save-field" value="KJ"></td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
 
 <script>
 
-/* ============================
-   TRAINING ROWS
-============================ */
-
-function addTrainingRow(data = {}) {
-
-  const tbody = document.getElementById("trainingRows");
-
-  const row = document.createElement("tr");
-
-  row.innerHTML = `
-
-    <td class="sl"></td>
-
-    <td>
-      <input
-        type="text"
-        placeholder="Training topic"
-        value="${escapeHTML(data.topic || "")}">
-    </td>
-
-    <td>
-      <input
-        type="date"
-        value="${escapeHTML(data.date || "")}">
-    </td>
-
-    <td>
-      <input
-        type="text"
-        placeholder="Trainer"
-        value="${escapeHTML(data.trainer || "")}">
-    </td>
-
-    <td>
-
-      <select>
-
-        <option value="Completed"
-          ${data.status === "Completed" ? "selected" : ""}>
-          Completed
-        </option>
-
-        <option value="Pending"
-          ${data.status === "Pending" ? "selected" : ""}>
-          Pending
-        </option>
-
-        <option value="Not Completed"
-          ${data.status === "Not Completed" ? "selected" : ""}>
-          Not Completed
-        </option>
-
-      </select>
-
-    </td>
-
-    <td>
-      <input
-        type="text"
-        value="${escapeHTML(data.signature || "")}">
-    </td>
-
-  `;
-
-  tbody.appendChild(row);
-
-  updateNumbers();
-}
+let editing = false;
 
 
-/* ============================
-   NUMBER TABLE ROWS
-============================ */
-
-function updateNumbers() {
-
-  const rows =
-    document.querySelectorAll("#trainingRows tr");
-
-  rows.forEach((row, index) => {
-
-    row.querySelector(".sl").textContent =
-      index + 1;
-
-  });
-
-}
-
-
-/* ============================
-   EDIT MODE
-============================ */
-
-let editMode = true;
+/* =========================
+   EDIT
+   ========================= */
 
 function toggleEdit() {
 
-  editMode = !editMode;
+    editing = !editing;
 
-  const fields =
-    document.querySelectorAll(
-      "input, textarea, select"
-    );
+    const page = document.getElementById("trainingPage");
+    const button = document.getElementById("editButton");
 
-  fields.forEach(field => {
+    if (editing) {
 
-    field.disabled = !editMode;
+        page.classList.add("editing");
 
-  });
+        button.innerHTML = "🔒 Finish Editing";
 
+        alert("Edit mode ON. You can now change the fields.");
+
+    } else {
+
+        page.classList.remove("editing");
+
+        button.innerHTML = "✏️ Edit";
+
+        saveRecord();
+
+        alert("Editing finished.");
+
+    }
 }
 
 
-/* ============================
-   SAVE RECORD
-============================ */
+/* =========================
+   SAVE
+   ========================= */
 
 function saveRecord() {
 
-  const record = {
+    const fields = document.querySelectorAll(".save-field");
 
-    staffName:
-      document.getElementById("staffName").value,
+    const values = [];
 
-    employeeId:
-      document.getElementById("employeeId").value,
-
-    department:
-      document.getElementById("department").value,
-
-    position:
-      document.getElementById("position").value,
-
-    recordNo:
-      document.getElementById("recordNo").value,
-
-    trainingDate:
-      document.getElementById("trainingDate").value,
-
-    trainer:
-      document.getElementById("trainer").value,
-
-    location:
-      document.getElementById("location").value,
-
-    notes:
-      document.getElementById("notes").value,
-
-    staffSignature:
-      document.getElementById("staffSignature").value,
-
-    supervisor:
-      document.getElementById("supervisor").value,
-
-    approvalDate:
-      document.getElementById("approvalDate").value,
-
-    rows: []
-
-  };
-
-
-  const rows =
-    document.querySelectorAll(
-      "#trainingRows tr"
-    );
-
-
-  rows.forEach(row => {
-
-    record.rows.push({
-
-      topic:
-        row.children[1]
-          .querySelector("input").value,
-
-      date:
-        row.children[2]
-          .querySelector("input").value,
-
-      trainer:
-        row.children[3]
-          .querySelector("input").value,
-
-      status:
-        row.children[4]
-          .querySelector("select").value,
-
-      signature:
-        row.children[5]
-          .querySelector("input").value
-
+    fields.forEach(function(field) {
+        values.push(field.value);
     });
 
-  });
+    localStorage.setItem(
+        "staffTrainingRecord",
+        JSON.stringify(values)
+    );
 
-
-  localStorage.setItem(
-    "khansStaffTrainingRecord",
-    JSON.stringify(record)
-  );
-
-
-  alert("Training record saved successfully.");
+    alert("Record saved successfully.");
 }
 
 
-/* ============================
-   LOAD RECORD
-============================ */
+/* =========================
+   LOAD SAVED DATA
+   ========================= */
 
 function loadRecord() {
 
-  const saved =
-    localStorage.getItem(
-      "khansStaffTrainingRecord"
+    const saved = localStorage.getItem(
+        "staffTrainingRecord"
     );
 
+    if (!saved) {
+        return;
+    }
 
-  if (!saved) {
-    return;
-  }
+    try {
 
+        const values = JSON.parse(saved);
 
-  const record =
-    JSON.parse(saved);
+        const fields = document.querySelectorAll(".save-field");
 
+        fields.forEach(function(field, index) {
 
-  document.getElementById("staffName").value =
-    record.staffName || "";
+            if (values[index] !== undefined) {
 
-  document.getElementById("employeeId").value =
-    record.employeeId || "";
+                field.value = values[index];
 
-  document.getElementById("department").value =
-    record.department || "";
+            }
 
-  document.getElementById("position").value =
-    record.position || "";
+        });
 
-  document.getElementById("recordNo").value =
-    record.recordNo || "";
+    } catch (error) {
 
-  document.getElementById("trainingDate").value =
-    record.trainingDate || "";
+        console.log("No saved record found.");
 
-  document.getElementById("trainer").value =
-    record.trainer || "";
-
-  document.getElementById("location").value =
-    record.location ||
-    "Khans Restaurant, Bayswater";
-
-  document.getElementById("notes").value =
-    record.notes || "";
-
-  document.getElementById("staffSignature").value =
-    record.staffSignature || "";
-
-  document.getElementById("supervisor").value =
-    record.supervisor || "";
-
-  document.getElementById("approvalDate").value =
-    record.approvalDate || "";
-
-
-  document.getElementById(
-    "trainingRows"
-  ).innerHTML = "";
-
-
-  if (record.rows && record.rows.length) {
-
-    record.rows.forEach(row => {
-
-      addTrainingRow(row);
-
-    });
-
-  }
-
+    }
 }
 
 
-/* ============================
-   ESCAPE HTML
-============================ */
+/* =========================
+   PDF
+   ========================= */
 
-function escapeHTML(value) {
+function generatePDF() {
 
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    if (editing) {
 
+        alert("Please finish editing and save first.");
+
+        return;
+    }
+
+    window.print();
 }
 
 
-/* ============================
-   INITIAL ROWS
-============================ */
+/* =========================
+   PRINT
+   ========================= */
 
-addTrainingRow();
-addTrainingRow();
-addTrainingRow();
+function printRecord() {
+
+    if (editing) {
+
+        alert("Please finish editing and save first.");
+
+        return;
+    }
+
+    window.print();
+}
 
 
-/* ============================
-   LOAD SAVED DATA
-============================ */
+/* =========================
+   CLEAR
+   ========================= */
 
-loadRecord();
+function clearRecord() {
+
+    const confirmClear = confirm(
+        "Are you sure you want to clear all entered information?"
+    );
+
+    if (!confirmClear) {
+        return;
+    }
+
+    localStorage.removeItem(
+        "staffTrainingRecord"
+    );
+
+    location.reload();
+}
+
+
+/* =========================
+   START
+   ========================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        loadRecord();
+
+    }
+);
 
 </script>
 
