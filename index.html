@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Staff Training Record</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f3f5f7;
+      color: #222;
+    }
+
+    header {
+      background: #123b63;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 25px;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      color: #123b63;
+      margin-bottom: 18px;
+      font-size: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      font-size: 15px;
+      background: white;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #123b63;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    button {
+      border: none;
+      border-radius: 7px;
+      padding: 12px 20px;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .save-btn {
+      background: #123b63;
+      color: white;
+    }
+
+    .clear-btn {
+      background: #777;
+      color: white;
+    }
+
+    .print-btn {
+      background: #16803c;
+      color: white;
+    }
+
+    .delete-btn {
+      background: #c62828;
+      color: white;
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .search {
+      margin-bottom: 15px;
+    }
+
+    .record {
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      padding: 15px;
+      margin-bottom: 12px;
+      background: #fafafa;
+    }
+
+    .record-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .record-header h3 {
+      color: #123b63;
+    }
+
+    .record-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px;
+      font-size: 14px;
+    }
+
+    .status {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 7px;
+      display: none;
+      font-weight: bold;
+    }
+
+    .success {
+      display: block;
+      background: #dff5e5;
+      color: #176b2d;
+    }
+
+    .error {
+      display: block;
+      background: #fde2e2;
+      color: #9b1c1c;
+    }
+
+    .empty {
+      text-align: center;
+      color: #777;
+      padding: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #777;
+      font-size: 13px;
+    }
+
+    @media (max-width: 700px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .record-info {
+        grid-template-columns: 1fr;
+      }
+
+      .record-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      header,
+      .form-card,
+      .search-card,
+      footer,
+      .delete-btn,
+      .print-btn {
+        display: none !important;
+      }
+
+      body {
+        background: white;
+      }
+
+      .container {
+        max-width: 100%;
+        margin: 0;
+      }
+
+      .record {
+        border: 1px solid #000;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Staff Training Record Management System</h1>
+  <p>Staff Training & Development Records</p>
+</header>
+
+<div class="container">
+
+  <!-- ADD RECORD -->
+  <div class="card form-card">
+    <h2>Add Staff Training Record</h2>
+
+    <form id="trainingForm">
+
+      <div class="grid">
+
+        <div>
+          <label>Employee Name *</label>
+          <input
+            type="text"
+            id="employeeName"
+            placeholder="Enter employee name"
+            required
+          >
+        </div>
+
+        <div>
+          <label>Employee ID</label>
+          <input
+            type="text"
+            id="employeeId"
+            placeholder="Enter employee ID"
+          >
+        </div>
+
+        <div>
+          <label>Department</label>
+          <input
+            type="text"
+            id="department"
+            placeholder="e.g. Maintenance"
+          >
+        </div>
+
+        <div>
+          <label>Designation</label>
+          <input
+            type="text"
+            id="designation"
+            placeholder="Enter designation"
+          >
+        </div>
+
+        <div>
+          <label>Training Title *</label>
+          <input
+            type="text"
+            id="trainingTitle"
+            placeholder="e.g. Fire Safety Training"
+            required
+          >
+        </div>
+
+        <div>
+          <label>Training Date *</label>
+          <input
+            type="date"
+            id="trainingDate"
+            required
+          >
+        </div>
+
+        <div>
+          <label>Trainer Name</label>
+          <input
+            type="text"
+            id="trainerName"
+            placeholder="Enter trainer name"
+          >
+        </div>
+
+        <div>
+          <label>Training Duration</label>
+          <input
+            type="text"
+            id="duration"
+            placeholder="e.g. 2 Hours"
+          >
+        </div>
+
+        <div>
+          <label>Training Location</label>
+          <input
+            type="text"
+            id="location"
+            placeholder="Enter location"
+          >
+        </div>
+
+        <div>
+          <label>Training Result</label>
+          <select id="result">
+            <option value="">Select result</option>
+            <option value="Completed">Completed</option>
+            <option value="Passed">Passed</option>
+            <option value="Attended">Attended</option>
+            <option value="Needs Further Training">
+              Needs Further Training
+            </option>
+          </select>
+        </div>
+
+        <div class="full">
+          <label>Training Topics</label>
+          <textarea
+            id="topics"
+            placeholder="Enter topics covered during training"
+          ></textarea>
+        </div>
+
+        <div class="full">
+          <label>Remarks</label>
+          <textarea
+            id="remarks"
+            placeholder="Enter remarks"
+          ></textarea>
+        </div>
+
+      </div>
+
+      <div class="buttons">
+        <button type="submit" class="save-btn">
+          Save Training Record
+        </button>
+
+        <button
+          type="button"
+          class="clear-btn"
+          onclick="clearForm()"
+        >
+          Clear
+        </button>
+      </div>
+
+      <div id="statusMessage" class="status"></div>
+
+    </form>
+  </div>
+
+
+  <!-- SEARCH -->
+  <div class="card search-card">
+
+    <h2>Training Records</h2>
+
+    <div class="search">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search employee, ID, department or training..."
+        oninput="searchRecords()"
+      >
+    </div>
+
+    <div id="recordsList">
+      <div class="empty">
+        Loading records...
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  Staff Training Record Management System
+</footer>
+
+
+<!-- FIREBASE -->
+<script type="module">
+
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    doc,
+    serverTimestamp,
+    query,
+    orderBy
+  }
+  from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+
+  /*
+  ============================================================
+  FIREBASE CONFIGURATION
+  ============================================================
+
+  REPLACE THE VALUES BELOW WITH YOUR FIREBASE WEB APP CONFIG.
+
+  Firebase Console
+  → Project Overview
+  → Your apps
+  → Web app
+  → SDK setup and configuration
+  */
+
+  const firebaseConfig = {
+
+    apiKey: "PASTE_YOUR_API_KEY_HERE",
+
+    authDomain:
+      "PASTE_YOUR_PROJECT_ID.firebaseapp.com",
+
+    projectId:
+      "PASTE_YOUR_PROJECT_ID",
+
+    storageBucket:
+      "PASTE_YOUR_STORAGE_BUCKET",
+
+    messagingSenderId:
+      "PASTE_YOUR_MESSAGING_SENDER_ID",
+
+    appId:
+      "PASTE_YOUR_APP_ID"
+
+  };
+
+
+  // Initialize Firebase
+
+  const app = initializeApp(firebaseConfig);
+
+  const db = getFirestore(app);
+
+
+  // Firebase collection
+
+  const recordsCollection =
+    collection(db, "trainingRecords");
+
+
+  // Store all records locally for searching
+
+  let allRecords = [];
+
+
+  // ==========================================================
+  // SAVE RECORD
+  // ==========================================================
+
+  document
+    .getElementById("trainingForm")
+    .addEventListener("submit", async function(event) {
+
+      event.preventDefault();
+
+      const status =
+        document.getElementById("statusMessage");
+
+      status.className = "status";
+      status.textContent = "Saving...";
+
+      try {
+
+        const record = {
+
+          employeeName:
+            document.getElementById("employeeName").value.trim(),
+
+          employeeId:
+            document.getElementById("employeeId").value.trim(),
+
+          department:
+            document.getElementById("department").value.trim(),
+
+          designation:
+            document.getElementById("designation").value.trim(),
+
+          trainingTitle:
+            document.getElementById("trainingTitle").value.trim(),
+
+          trainingDate:
+            document.getElementById("trainingDate").value,
+
+          trainerName:
+            document.getElementById("trainerName").value.trim(),
+
+          duration:
+            document.getElementById("duration").value.trim(),
+
+          location:
+            document.getElementById("location").value.trim(),
+
+          result:
+            document.getElementById("result").value,
+
+          topics:
+            document.getElementById("topics").value.trim(),
+
+          remarks:
+            document.getElementById("remarks").value.trim(),
+
+          createdAt:
+            serverTimestamp()
+
+        };
+
+
+        await addDoc(recordsCollection, record);
+
+
+        status.className =
+          "status success";
+
+        status.textContent =
+          "Training record saved successfully.";
+
+
+        document
+          .getElementById("trainingForm")
+          .reset();
+
+
+        await loadRecords();
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        status.className =
+          "status error";
+
+        status.textContent =
+          "Error saving record: " +
+          error.message;
+
+      }
+
+    });
+
+
+  // ==========================================================
+  // LOAD RECORDS
+  // ==========================================================
+
+  async function loadRecords() {
+
+    const recordsList =
+      document.getElementById("recordsList");
+
+    recordsList.innerHTML =
+      '<div class="empty">Loading records...</div>';
+
+    try {
+
+      const q = query(
+        recordsCollection,
+        orderBy("trainingDate", "desc")
+      );
+
+      const snapshot =
+        await getDocs(q);
+
+
+      allRecords = [];
+
+      snapshot.forEach((documentSnapshot) => {
+
+        allRecords.push({
+
+          id: documentSnapshot.id,
+
+          ...documentSnapshot.data()
+
+        });
+
+      });
+
+
+      displayRecords(allRecords);
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      recordsList.innerHTML =
+        '<div class="empty">Unable to load records.</div>';
+
+    }
+
+  }
+
+
+  // ==========================================================
+  // DISPLAY RECORDS
+  // ==========================================================
+
+  function displayRecords(records) {
+
+    const recordsList =
+      document.getElementById("recordsList");
+
+
+    if (records.length === 0) {
+
+      recordsList.innerHTML =
+        '<div class="empty">No training records found.</div>';
+
+      return;
+
+    }
+
+
+    recordsList.innerHTML = "";
+
+
+    records.forEach(record => {
+
+      const div =
+        document.createElement("div");
+
+      div.className = "record";
+
+
+      div.innerHTML = `
+
+        <div class="record-header">
+
+          <h3>
+            ${escapeHTML(record.employeeName || "Unnamed Employee")}
+          </h3>
+
+          <div>
+
+            <button
+              class="print-btn"
+              onclick="printRecord('${record.id}')"
+            >
+              Print
+            </button>
+
+            <button
+              class="delete-btn"
+              onclick="deleteRecord('${record.id}')"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="record-info">
+
+          <div>
+            <strong>Employee ID:</strong>
+            ${escapeHTML(record.employeeId || "-")}
+          </div>
+
+          <div>
+            <strong>Department:</strong>
+            ${escapeHTML(record.department || "-")}
+          </div>
+
+          <div>
+            <strong>Designation:</strong>
+            ${escapeHTML(record.designation || "-")}
+          </div>
+
+          <div>
+            <strong>Training:</strong>
+            ${escapeHTML(record.trainingTitle || "-")}
+          </div>
+
+          <div>
+            <strong>Date:</strong>
+            ${escapeHTML(record.trainingDate || "-")}
+          </div>
+
+          <div>
+            <strong>Trainer:</strong>
+            ${escapeHTML(record.trainerName || "-")}
+          </div>
+
+          <div>
+            <strong>Duration:</strong>
+            ${escapeHTML(record.duration || "-")}
+          </div>
+
+          <div>
+            <strong>Location:</strong>
+            ${escapeHTML(record.location || "-")}
+          </div>
+
+          <div>
+            <strong>Result:</strong>
+            ${escapeHTML(record.result || "-")}
+          </div>
+
+          <div>
+            <strong>Topics:</strong>
+            ${escapeHTML(record.topics || "-")}
+          </div>
+
+          <div class="full">
+            <strong>Remarks:</strong>
+            ${escapeHTML(record.remarks || "-")}
+          </div>
+
+        </div>
+
+      `;
+
+
+      recordsList.appendChild(div);
+
+    });
+
+  }
+
+
+  // ==========================================================
+  // SEARCH
+  // ==========================================================
+
+  window.searchRecords = function() {
+
+    const search =
+      document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    if (!search) {
+
+      displayRecords(allRecords);
+
+      return;
+
+    }
+
+
+    const filtered =
+      allRecords.filter(record => {
+
+        return (
+
+          (record.employeeName || "")
+            .toLowerCase()
+            .includes(search)
+
+          ||
+
+          (record.employeeId || "")
+            .toLowerCase()
+            .includes(search)
+
+          ||
+
+          (record.department || "")
+            .toLowerCase()
+            .includes(search)
+
+          ||
+
+          (record.trainingTitle || "")
+            .toLowerCase()
+            .includes(search)
+
+          ||
+
+          (record.trainerName || "")
+            .toLowerCase()
+            .includes(search)
+
+        );
+
+      });
+
+
+    displayRecords(filtered);
+
+  };
+
+
+  // ==========================================================
+  // DELETE
+  // ==========================================================
+
+  window.deleteRecord = async function(id) {
+
+    const confirmed =
+      confirm(
+        "Are you sure you want to delete this training record?"
+      );
+
+
+    if (!confirmed) return;
+
+
+    try {
+
+      await deleteDoc(
+        doc(db, "trainingRecords", id)
+      );
+
+
+      alert("Training record deleted.");
+
+      await loadRecords();
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Could not delete record: " +
+        error.message
+      );
+
+    }
+
+  };
+
+
+  // ==========================================================
+  // PRINT
+  // ==========================================================
+
+  window.printRecord = function(id) {
+
+    const record =
+      allRecords.find(
+        item => item.id === id
+      );
+
+
+    if (!record) return;
+
+
+    const printWindow =
+      window.open("", "_blank");
+
+
+    printWindow.document.write(`
+
+      <!DOCTYPE html>
+
+      <html>
+
+      <head>
+
+        <title>Staff Training Record</title>
+
+        <style>
+
+          body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            color: #222;
+          }
+
+          h1 {
+            text-align: center;
+            color: #123b63;
+          }
+
+          h2 {
+            text-align: center;
+            margin-bottom: 30px;
+          }
+
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+          }
+
+          td {
+            border: 1px solid #555;
+            padding: 10px;
+            vertical-align: top;
+          }
+
+          td:first-child {
+            width: 30%;
+            font-weight: bold;
+            background: #f1f1f1;
+          }
+
+          .signatures {
+            margin-top: 70px;
+            display: flex;
+            justify-content: space-between;
+          }
+
+          .signature {
+            width: 40%;
+            text-align: center;
+            border-top: 1px solid #222;
+            padding-top: 8px;
+          }
+
+        </style>
+
+      </head>
+
+      <body>
+
+        <h1>STAFF TRAINING RECORD</h1>
+
+        <h2>Training & Development</h2>
+
+
+        <table>
+
+          <tr>
+            <td>Employee Name</td>
+            <td>${escapeHTML(record.employeeName || "-")}</td>
+          </tr>
+
+          <tr>
+            <td>Employee ID</td>
+            <td>${escapeHTML(record.employeeId || "-")}</td>
+          </tr>
+
+          <tr>
+            <td>Department</td>
+            <td>${escapeHTML(record.department || "-")}</td>
+          </tr>
+
+          <tr>
+            <td>Designation</td>
+            <td>${escapeHTML(record.designation || "-")}</td>
+          </tr>
+
+          <tr>
+            <td>Training Title</td>
+            <td>${escapeHTML(record.trainingTitle || "-")}</td>
+          </tr>
+
+          <tr>
+            <td>Training Date</td>
+            <td>${escapeHTML(record.trainingDate || "-")}</td>
+          </tr>
+
+          <tr>
+            <td>Trainer</td>
+            <td>${escapeHTML(record.trainerName || "-")}</td>
+          </tr>
+
+          <tr>
+            <td>Duration</td>
+            <td>${escapeHTML(record.duration || "-")}</td>
+          </tr>
+
+          <tr>
+            <td>Location</td>
+            <td>${escapeHTML(record.location || "-")}</td>
+          </tr>
+
+          <tr>
+            <td>Result</td>
+            <td>${escapeHTML(record.result || "-")}</td>
+          </tr>
+
+          <tr>
+            <td>Training Topics</td>
+            <td>${escapeHTML(record.topics || "-")}</td>
+          </tr>
+
+          <tr>
+            <td>Remarks</td>
+            <td>${escapeHTML(record.remarks || "-")}</td>
+          </tr>
+
+        </table>
+
+
+        <div class="signatures">
+
+          <div class="signature">
+            Trainer Signature
+          </div>
+
+          <div class="signature">
+            Employee Signature
+          </div>
+
+        </div>
+
+
+        <script>
+          window.onload = function() {
+            window.print();
+          };
+        <\/script>
+
+      </body>
+
+      </html>
+
+    `);
+
+
+    printWindow.document.close();
+
+  };
+
+
+  // ==========================================================
+  // CLEAR FORM
+  // ==========================================================
+
+  window.clearForm = function() {
+
+    document
+      .getElementById("trainingForm")
+      .reset();
+
+    document
+      .getElementById("statusMessage")
+      .className = "status";
+
+  };
+
+
+  // ==========================================================
+  // SECURITY: HTML ESCAPE
+  // ==========================================================
+
+  function escapeHTML(value) {
+
+    return String(value)
+
+      .replace(/&/g, "&amp;")
+
+      .replace(/</g, "&lt;")
+
+      .replace(/>/g, "&gt;")
+
+      .replace(/"/g, "&quot;")
+
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  // Load records when page opens
+
+  loadRecords();
+
+</script>
+
+</body>
+</html>
